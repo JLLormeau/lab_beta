@@ -10,9 +10,8 @@ Open your azure cli like described here :
 **TRAINING DYNATRACE**  
 **DEPLOY training environment for Dynatrace Lab** : Go to your Azure Cli and apply these commands
    
-    cd;if [ -d "./lab-environment-for-dynatrace-training" ];then rm -rf ./lab-environment-for-dynatrace-training;fi
-    git clone https://github.com/JLLormeau/lab-environment-for-dynatrace-training.git
-    cd lab-environment-for-dynatrace-training;chmod +x ./azure-cli-deploy-vm-windows-and-linux-for-training-dynatrace.sh
+    git clone https://github.com/JLLormeau/lab-beta.git
+    cd lab-beta;chmod +x ./azure-cli-deploy-vm-windows-and-linux-for-training-dynatrace.sh
     ./azure-cli-deploy-vm-windows-and-linux-for-training-dynatrace.sh
     ls
       
