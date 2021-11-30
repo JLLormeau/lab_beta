@@ -21,6 +21,7 @@ NBENV=2
 END_ENV=$(($END_ENV-$START_ENV))
 WINDOWS_ENV="N"
 EASYTRAVEL_ENV="Y"
+FULL_INSTALLATION="N"
 MONGO_STOP="Y"
 KUBE_SCRIPT="N"
 VM_STARTED="N"
@@ -70,8 +71,9 @@ do
         echo "5) add env : easytravel installed                      ="$EASYTRAVEL_ENV
         if [[ $EASYTRAVEL_ENV = [Y] ]]; then echo "6) add env : cron to stop Mongo at "$HOUR_MONGO_STOP" H GMT            ="$MONGO_STOP;fi
         if [[ $MONGO_STOP = [Y] && $EASYTRAVEL_ENV = [Y] ]]; then echo "7) stop Mongo : hour (GMT) of Mongo shutdown           ="$HOUR_MONGO_STOP; fi
-        echo "8) kubernetes : script to deploy Azure Vote App on AKS ="$KUBE_SCRIPT
-        echo "9) start env : VM started after installation           ="$VM_STARTED
+        if [[ $EASYTRAVEL_ENV = [Y] ]]; then echo "8) full configuration : OneAgent + run Monaco            ="$FULL_INSTALLATION;fi
+	echo "9) kubernetes : script to deploy Azure Vote App on AKS ="$KUBE_SCRIPT
+        echo "10) start env : VM started after installation           ="$VM_STARTED
         echo "A) apply and deploy the VM - (Ctrl/c to quit)"
         echo ""
         sleep 0.1
@@ -111,10 +113,13 @@ do
                 "7") value=-1; until [ $value -ge 0 -a  $value -lt 24 ]; do read  -p "7) stop Mongo : hour (GMT) of Mongo shutdown (restart auto 20 minutes after)   =" value; done
 					HOUR_MONGO_STOP=$value
                 ;;
-                "8") if [ "$KUBE_SCRIPT" = "Y" ]; then KUBE_SCRIPT="N";echo "8) kubernetes : script to deploy Azure Vote App on AKS   =N"; else KUBE_SCRIPT="Y";echo "8) kubernetes : script to deploy Azure Vote App on AKS   =Y"; fi
+                "8") if [ "$FULL_INSTALLATION" = "Y" ]; then FULL_INSTALLATION="N";echo "8) full configuration : OneAgent + run Monaco   =N"; else FULL_INSTALLATION="Y";echo "8) full configuration : OneAgent + run Monaco   =Y"; fi
 					sleep 0.1;read  -p "Press any key to continue " pressanycase
 				;;
-                "9") if [ "$VM_STARTED" = "Y" ]; then VM_STARTED="N";echo "9) start env : VM started after installation   =N"; else VM_STARTED="Y";echo "9) start env : VM started after installation   =Y"; fi
+                "9") if [ "$KUBE_SCRIPT" = "Y" ]; then KUBE_SCRIPT="N";echo "8) kubernetes : script to deploy Azure Vote App on AKS   =N"; else KUBE_SCRIPT="Y";echo "8) kubernetes : script to deploy Azure Vote App on AKS   =Y"; fi
+					sleep 0.1;read  -p "Press any key to continue " pressanycase
+				;;
+                "10") if [ "$VM_STARTED" = "Y" ]; then VM_STARTED="N";echo "9) start env : VM started after installation   =N"; else VM_STARTED="Y";echo "9) start env : VM started after installation   =Y"; fi
 					sleep 0.1;read  -p "Press any key to continue " pressanycase
 				;;
                 "A") APPLY="Y"
