@@ -1,5 +1,7 @@
 #!/bin/bash
 #design by JLLormeau Dynatrace
+# version beta
+
 
 TIME=`date +%Y%m%d%H%M%S`
 DOMAIN_NAME_DEFAULT='dynatracelab'$TIME
