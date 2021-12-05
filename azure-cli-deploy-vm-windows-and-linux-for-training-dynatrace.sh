@@ -241,34 +241,13 @@ then
 				else verif="ko"; echo "bad PaaS Token" ; value="ko";read pressanycase;fi
 			     fi;done
 			;;
-			"2") verif="ko"
+			"3") verif="ko"
 			      until [ $verif = "ok" ]; do read  -p "0) user list : " list_user2
 			       if [[ $list_user2 != "" ]] ;then
 				verif="ok";sed -i 's/$list_user/$list_user2/g' ./env.file;. env.file
-				else verif="ko"; echo "bad liset user" ; value="ko";read pressanycase;fi
+				else verif="ko"; echo "bad liste user" ; value="ko";read pressanycase;fi
 			     fi;done
 			;;
-			"4") if [ "$WINDOWS_ENV" = "Y" ]; then WINDOWS_ENV="N"; echo "4) add env : window VM to env   =N" ; else WINDOWS_ENV="Y"; echo "4) add env : window VM to env   =Y"; fi
-						sleep 0.1;read  -p "Press any key to continue " pressanycase
-					;;
-			"5") if [ "$EASYTRAVEL_ENV" = "Y" ]; then EASYTRAVEL_ENV="N"; echo "5) add env : easytravel installed   =N"; else EASYTRAVEL_ENV="Y";echo "5) add env : easytravel installed   =Y"; fi
-						sleep 0.1;read  -p "Press any key to continue " pressanycase
-					;;
-			"6") if [ "$MONGO_STOP" = "Y" ]; then MONGO_STOP="N";echo "6) add env : cron to stop Mongo at "$HOUR_MONGO_STOP" H GMT   =N"; else MONGO_STOP="Y";echo "6) add env : cron to stop Mongo at "$HOUR_MONGO_STOP" H GMT   =Y"; fi
-						sleep 0.1;read  -p "Press any key to continue " pressanycase
-					;;
-			"7") value=-1; until [ $value -ge 0 -a  $value -lt 24 ]; do read  -p "7) stop Mongo : hour (GMT) of Mongo shutdown (restart auto 20 minutes after)   =" value; done
-						HOUR_MONGO_STOP=$value
-			;;
-			"8") if [ "$FULL_INSTALLATION" = "Y" ]; then FULL_INSTALLATION="N";echo "8) full configuration : OneAgent + run Monaco   =N"; else FULL_INSTALLATION="Y";echo "8) full configuration : OneAgent + run Monaco   =Y"; fi
-						sleep 0.1;read  -p "Press any key to continue " pressanycase
-					;;
-			"9") if [ "$VM_STARTED" = "Y" ]; then VM_STARTED="N";echo "9) start env : VM started after installation   =N"; else VM_STARTED="Y";echo "9) start env : VM started after installation   =Y"; fi
-						sleep 0.1;read  -p "Press any key to continue " pressanycase
-					;;
-			"10") if [ "$KUBE_SCRIPT" = "Y" ]; then KUBE_SCRIPT="N";echo "8) kubernetes : script to deploy Azure Vote App on AKS   =N"; else KUBE_SCRIPT="Y";echo "8) kubernetes : script to deploy Azure Vote App on AKS   =Y"; fi
-						sleep 0.1;read  -p "Press any key to continue " pressanycase
-					;;
 			"A") APPLY="Y"
 					DOMAIN_NAME=$DOMAIN_NAME_DEFAULT
 		esac
