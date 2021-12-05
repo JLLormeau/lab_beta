@@ -214,7 +214,7 @@ then
 		echo "0) Tenant                         	="$MyTenant
 		echo "1) API Token                            ="$MyToken
 		echo "2) PaaS Token	                        ="$PaasToken
-		echo "3) email		                ="$list_user
+		#echo "3) email		                ="$list_user
 		echo "A) apply and deploy the VM - (Ctrl/c to quit)"
 		echo ""
 		sleep 0.1
@@ -320,6 +320,16 @@ do
                         then
                                 az vm run-command invoke -g "$RESOURCE_GROUP" -n "$DOMAIN" --command-id RunShellScript --scripts "service cron start && (crontab -l 2>/dev/null; echo \"0 "$HOUR_MONGO_STOP" * * * date >> /home/cron.log && /home/dynatracelab_easytraveld/start-stop-easytravel.sh restartmongo >> /home/cron.log 2>&1\") | crontab  - && (crontab -l 2>/dev/null; echo \"20 "$HOUR_MONGO_STOP" * * * date >> /home/cron.log && /home/dynatracelab_easytraveld/start-stop-easytravel.sh restart >> /home/cron.log 2>&1\") | crontab -";
                         fi
+			if [[ $FULL_INSTALLATION = [Y] ]]
+                        then
+                                az vm run-command invoke -g "$RESOURCE_GROUP" -n "$DOMAIN" --command-id RunShellScript --scripts "wget  -O Dynatrace-OneAgent-Linux-latest.sh \"https://"$MyTenant"/api/v1/deployment/installer/agent/unix/default/latest?arch=x86&flavor=default\" --header=\"Authorization: Api-Token "$PaasToken"\" && sudo /bin/sh Dynatrace-OneAgent-Linux-lates.sh --set-host-group=easytravel"$X$i" --set-host-property=env=sandbox";
+                        fi				
+                        then
+				export Appname="easytravel"$X$i
+				export Hostname=$RESOURCE_GROUP"."$LOCATION".cloudapp.azure.com"
+				./monaco deploy -e=environments.yaml template-monaco-for-easytravel/Deploy
+				./monaco deploy -e=environments.yaml template-monaco-for-easytravel/Slo
+                        fi				
         fi
         ###Add script to deploi kubernetes AKS with your Azure Service Principal
         if [[ $KUBE_SCRIPT = [Y] ]]
