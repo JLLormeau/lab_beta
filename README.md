@@ -1,6 +1,6 @@
 #Version Beta
    
-    cd ~
+    cd ~;if [ -d "./lab-environment-for-dynatrace-training" ];then rm -rf ./lab-environment-for-dynatrace-training;fi
     git clone https://github.com/JLLormeau/lab_beta.git
     cd lab_beta;chmod +x ./azure-cli-deploy-vm-windows-and-linux-for-training-dynatrace.sh
     wget https://github.com/dynatrace-oss/dynatrace-monitoring-as-code/releases/latest/download/monaco-linux-amd64;
