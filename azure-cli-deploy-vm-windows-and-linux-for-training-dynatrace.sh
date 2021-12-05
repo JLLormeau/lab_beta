@@ -205,15 +205,16 @@ read  -p "Press any key to continue " pressanycase
 
 if [[ $FULL_INSTALLATION = [Y] ]]
 then
+	APPLY="N"
 	while [ "$APPLY" !=  "Y" ]
 	do
 		echo
 		echo "PARAMETER : "
 		echo ""
 		echo "0) Tenant                         	="$MyTenant
-		echo "1) API Token                              ="$MyToken
+		echo "1) API Token                            ="$MyToken
 		echo "2) PaaS Token	                        ="$PaasToken
-		echo "3) email		                        ="${list[@]}
+		echo "3) email		                ="$list_user
 		echo "A) apply and deploy the VM - (Ctrl/c to quit)"
 		echo ""
 		sleep 0.1
@@ -224,28 +225,28 @@ then
 			      until [ $verif = "ok" ]; do read  -p "0) Tenant : <YYY>.live.dynatrace.com" MyTenant2
 			       if [[ $MyTenant2 =~ ^[a-z][a-z][a-z][a-z0-9][a-z0-9][a-z0-9][a-z0-9][a-z0-9]\.live\.dynatrace\.com+$ ]] && [ `curl https://pdo57423.live.dynatrace.com/rest/health` = "RUNNING" ]  ;then
 				verif="ok";sed -i 's/$MyTenant/$MyTenant2/g' ./env.file;. env.file
-				else verif="ko"; echo "bad saas tenant address" ; value="ko";read pressanycase;fi
+				else verif="ko"; echo "bad saas tenant address" ; value="ko";read pressanycase;
 			     fi;done
 			;;
 			"1") verif="ko"
 			      until [ $verif = "ok" ]; do read  -p "0) API Token : dt0c01.abcdefghij.abcdefghijklmn" MyToken2
 			       if [[ $MyToken2 =~ ^dt0c01\.[a-z0-9]++\.[a-z0-9]+++$ ]] ;then
 				verif="ok";sed -i 's/$MyToken/$MyToken2/g' ./env.file;. env.file
-				else verif="ko"; echo "bad API Token" ; value="ko";read pressanycase;fi
+				else verif="ko"; echo "bad API Token" ; value="ko";read pressanycase;
 			     fi;done
 			;;
 			"2") verif="ko"
 			      until [ $verif = "ok" ]; do read  -p "0) PaaS Token : dt0c01.abcdefghij.abcdefghijklmn" PaasToken2
 			       if [[ $PaasToken2 =~ ^dt0c01\.[a-z0-9]++\.[a-z0-9]+++$ ]] ;then
 				verif="ok";sed -i 's/$PaasToken/$PaasToken2/g' ./env.file;. env.file
-				else verif="ko"; echo "bad PaaS Token" ; value="ko";read pressanycase;fi
+				else verif="ko"; echo "bad PaaS Token" ; value="ko";read pressanycase;
 			     fi;done
 			;;
 			"3") verif="ko"
 			      until [ $verif = "ok" ]; do read  -p "0) user list : " list_user2
 			       if [[ $list_user2 != "" ]] ;then
 				verif="ok";sed -i 's/$list_user/$list_user2/g' ./env.file;. env.file
-				else verif="ko"; echo "bad liste user" ; value="ko";read pressanycase;fi
+				else verif="ko"; echo "bad liste user" ; value="ko";read pressanycase;
 			     fi;done
 			;;
 			"A") APPLY="Y"
