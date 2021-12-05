@@ -234,16 +234,19 @@ then
 				else verif="ko"; echo "bad API Token" ; value="ko";read pressanycase;fi
 			     fi;done
 			;;
-			"3") verif="ko"
+			"2") verif="ko"
 			      until [ $verif = "ok" ]; do read  -p "0) PaaS Token : dt0c01.abcdefghij.abcdefghijklmn" PaasToken2
 			       if [[ $PaasToken2 =~ ^dt0c01\.[a-z0-9]++\.[a-z0-9]+++$ ]] ;then
 				verif="ok";sed -i 's/$PaasToken/$PaasToken2/g' ./env.file;. env.file
 				else verif="ko"; echo "bad PaaS Token" ; value="ko";read pressanycase;fi
 			     fi;done
 			;;
-			"4") value=-1
-			     until [ $value -gt 0 -a  $value -le $((20-$START_ENV)) ];do read -p "3) config env : nbr total env (maxi "$((20-$START_ENV))")   " value;  done
-			   NBENV=$value
+			"2") verif="ko"
+			      until [ $verif = "ok" ]; do read  -p "0) user list : " list_user2
+			       if [[ $list_user2 != "" ]] ;then
+				verif="ok";sed -i 's/$list_user/$list_user2/g' ./env.file;. env.file
+				else verif="ko"; echo "bad liset user" ; value="ko";read pressanycase;fi
+			     fi;done
 			;;
 			"4") if [ "$WINDOWS_ENV" = "Y" ]; then WINDOWS_ENV="N"; echo "4) add env : window VM to env   =N" ; else WINDOWS_ENV="Y"; echo "4) add env : window VM to env   =Y"; fi
 						sleep 0.1;read  -p "Press any key to continue " pressanycase
