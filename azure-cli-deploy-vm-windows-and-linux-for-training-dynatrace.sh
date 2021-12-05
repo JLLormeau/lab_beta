@@ -327,6 +327,7 @@ do
                         then
 				export Appname="easytravel"$X$i
 				export Hostname=$RESOURCE_GROUP"."$LOCATION".cloudapp.azure.com"
+				export Email="user"$X$i"@easytravel.com"
 				./monaco deploy -e=environments.yaml template-monaco-for-easytravel/Deploy
 				./monaco deploy -e=environments.yaml template-monaco-for-easytravel/Slo
                         fi				
