@@ -5,7 +5,6 @@
     wget https://github.com/dynatrace-oss/dynatrace-monitoring-as-code/releases/latest/download/monaco-linux-amd64;
     mv monaco-linux-amd64 monaco;chmod +x monaco
     ./azure-cli-deploy-vm-windows-and-linux-for-training-dynatrace.sh
-    ls
       
 And define your configuration :
 
