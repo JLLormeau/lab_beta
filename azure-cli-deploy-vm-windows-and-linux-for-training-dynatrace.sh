@@ -2,7 +2,8 @@
 #design by JLLormeau Dynatrace
 # version beta
 
-
+. env.file
+NEW_CLI=1
 TIME=`date +%Y%m%d%H%M%S`
 DOMAIN_NAME_DEFAULT='dynatracelab'$TIME
 PASSWORD='Dynatrace@2021'
@@ -201,6 +202,78 @@ done
 echo ""
 sleep 0.1
 read  -p "Press any key to continue " pressanycase
+
+if [[ $FULL_INSTALLATION = [Y] ]]
+then
+	while [ "$APPLY" !=  "Y" ]
+	do
+		echo
+		echo "PARAMETER : "
+		echo ""
+		echo "0) Tenant                         	="$MyTenant
+		echo "1) API Token                              ="$MyToken
+		echo "2) PaaS Token	                        ="$PaasToken
+		echo "3) email		                        ="${list[@]}
+		echo "A) apply and deploy the VM - (Ctrl/c to quit)"
+		echo ""
+		sleep 0.1
+		read  -p "Input Selection (0, 1, 2, 3  or A): " reponse
+
+		case "$reponse" in
+			"0") verif="ko"
+			      until [ $verif = "ok" ]; do read  -p "0) Tenant : <YYY>.live.dynatrace.com" MyTenant2
+			       if [[ $MyTenant2 =~ ^[a-z][a-z][a-z][a-z0-9][a-z0-9][a-z0-9][a-z0-9][a-z0-9]\.live\.dynatrace\.com+$ ]] && [ `curl https://pdo57423.live.dynatrace.com/rest/health` = "RUNNING" ]  ;then
+				verif="ok";sed -i 's/$MyTenant/$MyTenant2/g' ./env.file;. env.file
+				else verif="ko"; echo "bad saas tenant address" ; value="ko";read pressanycase;fi
+			     fi;done
+			;;
+			"1") verif="ko"
+			      until [ $verif = "ok" ]; do read  -p "0) API Token : dt0c01.abcdefghij.abcdefghijklmn" MyToken2
+			       if [[ $MyToken2 =~ ^dt0c01\.[a-z0-9]++\.[a-z0-9]+++$ ]] ;then
+				verif="ok";sed -i 's/$MyToken/$MyToken2/g' ./env.file;. env.file
+				else verif="ko"; echo "bad API Token" ; value="ko";read pressanycase;fi
+			     fi;done
+			;;
+			"3") verif="ko"
+			      until [ $verif = "ok" ]; do read  -p "0) PaaS Token : dt0c01.abcdefghij.abcdefghijklmn" PaasToken2
+			       if [[ $PaasToken2 =~ ^dt0c01\.[a-z0-9]++\.[a-z0-9]+++$ ]] ;then
+				verif="ok";sed -i 's/$PaasToken/$PaasToken2/g' ./env.file;. env.file
+				else verif="ko"; echo "bad PaaS Token" ; value="ko";read pressanycase;fi
+			     fi;done
+			;;
+			"4") value=-1
+			     until [ $value -gt 0 -a  $value -le $((20-$START_ENV)) ];do read -p "3) config env : nbr total env (maxi "$((20-$START_ENV))")   " value;  done
+			   NBENV=$value
+			;;
+			"4") if [ "$WINDOWS_ENV" = "Y" ]; then WINDOWS_ENV="N"; echo "4) add env : window VM to env   =N" ; else WINDOWS_ENV="Y"; echo "4) add env : window VM to env   =Y"; fi
+						sleep 0.1;read  -p "Press any key to continue " pressanycase
+					;;
+			"5") if [ "$EASYTRAVEL_ENV" = "Y" ]; then EASYTRAVEL_ENV="N"; echo "5) add env : easytravel installed   =N"; else EASYTRAVEL_ENV="Y";echo "5) add env : easytravel installed   =Y"; fi
+						sleep 0.1;read  -p "Press any key to continue " pressanycase
+					;;
+			"6") if [ "$MONGO_STOP" = "Y" ]; then MONGO_STOP="N";echo "6) add env : cron to stop Mongo at "$HOUR_MONGO_STOP" H GMT   =N"; else MONGO_STOP="Y";echo "6) add env : cron to stop Mongo at "$HOUR_MONGO_STOP" H GMT   =Y"; fi
+						sleep 0.1;read  -p "Press any key to continue " pressanycase
+					;;
+			"7") value=-1; until [ $value -ge 0 -a  $value -lt 24 ]; do read  -p "7) stop Mongo : hour (GMT) of Mongo shutdown (restart auto 20 minutes after)   =" value; done
+						HOUR_MONGO_STOP=$value
+			;;
+			"8") if [ "$FULL_INSTALLATION" = "Y" ]; then FULL_INSTALLATION="N";echo "8) full configuration : OneAgent + run Monaco   =N"; else FULL_INSTALLATION="Y";echo "8) full configuration : OneAgent + run Monaco   =Y"; fi
+						sleep 0.1;read  -p "Press any key to continue " pressanycase
+					;;
+			"9") if [ "$VM_STARTED" = "Y" ]; then VM_STARTED="N";echo "9) start env : VM started after installation   =N"; else VM_STARTED="Y";echo "9) start env : VM started after installation   =Y"; fi
+						sleep 0.1;read  -p "Press any key to continue " pressanycase
+					;;
+			"10") if [ "$KUBE_SCRIPT" = "Y" ]; then KUBE_SCRIPT="N";echo "8) kubernetes : script to deploy Azure Vote App on AKS   =N"; else KUBE_SCRIPT="Y";echo "8) kubernetes : script to deploy Azure Vote App on AKS   =Y"; fi
+						sleep 0.1;read  -p "Press any key to continue " pressanycase
+					;;
+			"A") APPLY="Y"
+					DOMAIN_NAME=$DOMAIN_NAME_DEFAULT
+		esac
+	done
+else
+        echo 'ENVIRONMENT : Linux'
+        echo '#User;Env Linux;Password' >>  delete_ressourcegroup_$DOMAIN_NAME_$TIME.sh
+fi
 
 echo ""
 echo "##################################################################################################################################"
