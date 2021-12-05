@@ -222,9 +222,9 @@ then
 
 		case "$reponse" in
 			"0") verif="ko"
-			      until [ $verif = "ok" ]; do read  -p "0) Tenant : <YYY>.live.dynatrace.com" MyTenant2
-			       if [[ $MyTenant2 =~ ^[a-z][a-z][a-z][a-z0-9][a-z0-9][a-z0-9][a-z0-9][a-z0-9]\.live\.dynatrace\.com+$ ]] && [ `curl https://pdo57423.live.dynatrace.com/rest/health` = "RUNNING" ]  ;then
-				verif="ok";sed -i 's/$MyTenant/$MyTenant2/g' ./env.file;. env.file
+			      until [ $verif = "ok" ]; do read  -p "0) Tenant : <YYY>.live.dynatrace.com   " MyTenant2
+			       if [[ $MyTenant2 =~ ^[a-z][a-z][a-z][a-z0-9][a-z0-9][a-z0-9][a-z0-9][a-z0-9]\.live\.dynatrace\.com+$ ]] && [ `curl https://$MyTenant2/rest/health` = "RUNNING" ]  ;then
+				verif="ok";echo $MyTenant2;sed -i 's/$MyTenant/$MyTenant2/g' ./env.file;export MyTenant=$MyTenant2
 				else verif="ko"; echo "bad saas tenant address" ; value="ko";read pressanycase;
 			     fi;done
 			;;
