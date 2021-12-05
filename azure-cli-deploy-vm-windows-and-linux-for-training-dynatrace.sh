@@ -229,21 +229,21 @@ then
 			     fi;done
 			;;
 			"1") verif="ko"
-			      until [ $verif = "ok" ]; do read  -p "0) API Token : dt0c01.abcdefghij.abcdefghijklmn   " MyToken2
-			       if [[ $MyToken2 =~ ^dt[a-z0-9]++\.[a-z0-9]++\.[a-z0-9]++ ]] ;then
+			      until [ $verif = "ok" ]; do read  -p "1) API Token : dt0c01.abcdefghij.abcdefghijklmn   " MyToken2
+			       if [[ $MyToken2 =~ ^dt[a-z0-9]++\.[a-zA-Z0-9]++\.[a-zA-Z0-9]++ ]] ;then
 				verif="ok";sed -i s/MyToken=$MyToken/MyToken=$MyToken2/g env.file;. env.file
 				else verif="ko"; echo "bad API Token" ; value="ko";read pressanycase;
 			     fi;done
 			;;
 			"2") verif="ko"
-			      until [ $verif = "ok" ]; do read  -p "0) PaaS Token : dt0c01.abcdefghij.abcdefghijklmn   " PaasToken2
+			      until [ $verif = "ok" ]; do read  -p "2) PaaS Token : dt0c01.abcdefghij.abcdefghijklmn   " PaasToken2
 			       if [[ $PaasToken2 =~ ^dt[a-z0-9]++\.[a-zA-Z0-9]++\.[a-zA-Z0-9]++ ]] ;then
 				verif="ok";sed -i s/PaasToken=$PaasToken/PaasToken=$PaasToken2/g env.file;. env.file
 				else verif="ko"; echo "bad PaaS Token" ; value="ko";read pressanycase;
 			     fi;done
 			;;
 			"3") verif="ko"
-			      until [ $verif = "ok" ]; do read  -p "0) user list :    " list_user2
+			      until [ $verif = "ok" ]; do read  -p "3) user list :    " list_user2
 			       if [[ $list_user2 != "" ]] ;then
 				verif="ok";sed -i s/$list_user/$list_user2/g ./env.file;. env.file
 				else verif="ko"; echo "bad liste user" ; value="ko";read pressanycase;
