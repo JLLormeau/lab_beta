@@ -24,11 +24,11 @@ You will import :
 	   export Appname=easytravel<XX>
 	   export Hostname=dynatracelab<XX>.<AzureRegion>.cloudapp.azure.com
 	   export Email=<your email of Dynatrace saas tenant connection>
-
+	   export EnableSynthetic=true
   
 2) validate the env variables 
 
-       echo "NEW_CLI="$NEW_CLI;echo "MyTenant=https://"$MyTenant;echo "MyToken="$MyToken;echo "Appname="$Appname;echo "Hostname="$Hostname;echo "Email="$Email 
+       echo "NEW_CLI="$NEW_CLI;echo "MyTenant=https://"$MyTenant;echo "MyToken="$MyToken;echo "Appname="$Appname;echo "Hostname="$Hostname;echo "Email="$Email; echo "EnableSynthetic="$EnableSynthetic  
 
 3) deploy the configuration 
 
