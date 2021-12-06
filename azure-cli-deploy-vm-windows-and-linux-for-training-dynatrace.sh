@@ -243,15 +243,19 @@ then
 				else verif="ko"; echo "bad PaaS Token" ; value="ko";read pressanycase;
 			     fi;done
 			;;
-			"3") verif="ko"; test="ok"
-			      until [ $verif = "ok" ]; do read  -p "3) user list \"user1@ser.com user2@user2.com\" :    " list_user
-			       for i in ${list_user// / } ; do
-    				  if [[ $i !=~ ^[a-z0-9-_\.]++@[a-zA-Z0-9-_]++\.[a-zA-Z0-9]++ ]] ;then
-				  	test="ko"
-				done; if test = "ok"; then verif = "ok";
-				else verif="ko"; echo "bad user format" ; value="ko";read pressanycase;
-			     fi;done
-			;;
+                        "3") verif="ko"; testemail="ok";
+                              until [ $verif = "ok" ]; do read  -p "3) user list \"user1@ser.com user2@user2.com\" :    " list_user2
+                               for i in ${list_user2// / } ; do
+                                        if [[ ! "$i" =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$ ]]
+                                        then
+                                                echo "Email address $i is invalid."
+                                                testemail="ko"
+                                                break
+                                        fi
+                                if testemail="ok";then list_user=$list_user2;verif="ok"
+                                else verif="ko";echo "bad email format";read pressanycase;
+                             fi;done;done
+                        ;;
 			"A") APPLY="Y"
 					DOMAIN_NAME=$DOMAIN_NAME_DEFAULT
 		esac
@@ -335,8 +339,12 @@ do
 				export MyToken=$MyToken
 				export Appname="easytravel"$X$i
 				export Hostname=$RESOURCE_GROUP"."$LOCATION".cloudapp.azure.com"
-				if $i
-				export Email="user"$X$i"@easytravel.com"
+				export Email="user"$i"@easytravel.com"
+				email=`echo $list_user | cut -d" " -f$(( $i + 1 ))`
+				if [ "$email"  != "" ]
+				then
+					export Email=$email
+				fi
 				./monaco deploy -e=environments.yaml template-monaco-for-easytravel/Deploy
 				./monaco deploy -e=environments.yaml template-monaco-for-easytravel/Slo
                         fi				
