@@ -215,7 +215,7 @@ then
 		echo "0) Tenant                         	="$MyTenant
 		echo "1) API Token                            ="$MyToken
 		echo "2) PaaS Token	                        ="$PaasToken
-		#echo "3) email		                ="$list_user
+		echo "3) email		                ="$list_user
 		echo "A) apply and deploy the VM - (Ctrl/c to quit)"
 		echo ""
 		sleep 0.1
@@ -244,9 +244,13 @@ then
 			     fi;done
 			;;
 			"3") verif="ko"
-			      until [ $verif = "ok" ]; do read  -p "3) user list :    " list_user2
+			      until [ $verif = "ok" ]; do read  -p "3) user list user1@ser.com; user2@user2.com; :    " list_user2
 			       if [[ $list_user2 != "" ]] ;then
-				verif="ok";sed -i s/$list_user/$list_user2/g ./env.file;. env.file
+			       		list_user=${list_user2// /}
+					for i in ${list_user//;/ } ; do
+    						echo "$i"
+					done
+				verif="ok"
 				else verif="ko"; echo "bad liste user" ; value="ko";read pressanycase;
 			     fi;done
 			;;
