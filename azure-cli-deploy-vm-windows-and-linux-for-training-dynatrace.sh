@@ -243,15 +243,13 @@ then
 				else verif="ko"; echo "bad PaaS Token" ; value="ko";read pressanycase;
 			     fi;done
 			;;
-			"3") verif="ko"
-			      until [ $verif = "ok" ]; do read  -p "3) user list user1@ser.com; user2@user2.com; :    " list_user2
-			       if [[ $list_user2 != "" ]] ;then
-			       		list_user=${list_user2// /}
-					for i in ${list_user//;/ } ; do
-    						echo "$i"
-					done
-				verif="ok"
-				else verif="ko"; echo "bad liste user" ; value="ko";read pressanycase;
+			"3") verif="ko"; test="ok"
+			      until [ $verif = "ok" ]; do read  -p "3) user list \"user1@ser.com user2@user2.com\" :    " list_user
+			       for i in ${list_user// / } ; do
+    				  if [[ $i !=~ ^[a-z0-9-_\.]++@[a-zA-Z0-9]++\.[a-zA-Z]++ ]] ;then
+				  	test="ko"
+				done; if test = "ok"; then verif = "ok";
+				else verif="ko"; echo "bad user format" ; value="ko";read pressanycase;
 			     fi;done
 			;;
 			"A") APPLY="Y"
@@ -337,6 +335,7 @@ do
 				export MyToken=$MyToken
 				export Appname="easytravel"$X$i
 				export Hostname=$RESOURCE_GROUP"."$LOCATION".cloudapp.azure.com"
+				if $i
 				export Email="user"$X$i"@easytravel.com"
 				./monaco deploy -e=environments.yaml template-monaco-for-easytravel/Deploy
 				./monaco deploy -e=environments.yaml template-monaco-for-easytravel/Slo
