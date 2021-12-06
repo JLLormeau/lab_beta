@@ -3,7 +3,8 @@
 # version beta
 
 . env.file
-NEW_CLI=1
+export NEW_CLI=1
+export EnableSynthetic=true
 TIME=`date +%Y%m%d%H%M%S`
 DOMAIN_NAME_DEFAULT='dynatracelab'$TIME
 PASSWORD='Dynatrace@2021'
@@ -328,12 +329,11 @@ do
                         fi				
 			if [[ $FULL_INSTALLATION = [Y] ]]
                         then
+				export MyTenant=$MyTenant
+				export MyToken=$MyToken
 				export Appname="easytravel"$X$i
 				export Hostname=$RESOURCE_GROUP"."$LOCATION".cloudapp.azure.com"
 				export Email="user"$X$i"@easytravel.com"
-				export EnableSynthetic=true
-				export MyTenant=$MyTenant
-				export MyToken=$MyToken
 				./monaco deploy -e=environments.yaml template-monaco-for-easytravel/Deploy
 				./monaco deploy -e=environments.yaml template-monaco-for-easytravel/Slo
                         fi				
