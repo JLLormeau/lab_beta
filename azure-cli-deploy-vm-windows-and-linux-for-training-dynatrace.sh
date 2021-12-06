@@ -246,7 +246,7 @@ then
 			"3") verif="ko"; test="ok"
 			      until [ $verif = "ok" ]; do read  -p "3) user list \"user1@ser.com user2@user2.com\" :    " list_user
 			       for i in ${list_user// / } ; do
-    				  if [[ $i !=~ ^[a-z0-9-_\.]++@[a-zA-Z0-9]++\.[a-zA-Z]++ ]] ;then
+    				  if [[ $i !=~ ^[a-z0-9-_\.]++@[a-zA-Z0-9-_]++\.[a-zA-Z0-9]++ ]] ;then
 				  	test="ko"
 				done; if test = "ok"; then verif = "ok";
 				else verif="ko"; echo "bad user format" ; value="ko";read pressanycase;
