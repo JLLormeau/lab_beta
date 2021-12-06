@@ -215,7 +215,7 @@ then
 		echo "0) Tenant                         	="$MyTenant
 		echo "1) API Token                            ="$MyToken
 		echo "2) PaaS Token	                        ="$PaasToken
-		echo "3) email		                ="$list_user
+		echo "3) List of emails		                ="$list_user
 		echo "A) apply and deploy the VM - (Ctrl/c to quit)"
 		echo ""
 		sleep 0.1
@@ -230,21 +230,21 @@ then
 			     fi;done
 			;;
 			"1") verif="ko"
-			      until [ $verif = "ok" ]; do read  -p "1) API Token : dt0c01.abcdefghij.abcdefghijklmn   " MyToken2
+			      until [ $verif = "ok" ]; do read  -p "1) API Token : dt0c01.abcdefghij.abcdefghijklmn :    " MyToken2
 			       if [[ $MyToken2 =~ ^dt[a-z0-9]++\.[a-zA-Z0-9]++\.[a-zA-Z0-9]++ ]] ;then
 				verif="ok";sed -i s/MyToken=$MyToken/MyToken=$MyToken2/g env.file;. env.file
 				else verif="ko"; echo "bad API Token" ; value="ko";read pressanycase;
 			     fi;done
 			;;
 			"2") verif="ko"
-			      until [ $verif = "ok" ]; do read  -p "2) PaaS Token : dt0c01.abcdefghij.abcdefghijklmn   " PaasToken2
+			      until [ $verif = "ok" ]; do read  -p "2) PaaS Token : dt0c01.abcdefghij.abcdefghijklmn :    " PaasToken2
 			       if [[ $PaasToken2 =~ ^dt[a-z0-9]++\.[a-zA-Z0-9]++\.[a-zA-Z0-9]++ ]] ;then
 				verif="ok";sed -i s/PaasToken=$PaasToken/PaasToken=$PaasToken2/g env.file;. env.file
 				else verif="ko"; echo "bad PaaS Token" ; value="ko";read pressanycase;
 			     fi;done
 			;;
                         "3") verif="ko"; testemail="ok";
-                              until [ $verif = "ok" ]; do read  -p "3) user list \"user1@ser.com user2@user2.com\" :    " list_user2
+                              until [ $verif = "ok" ]; do read  -p "3) list of email : user1@ser.com user2@user2.com :    " list_user2
                                for i in ${list_user2// / } ; do
                                         if [[ ! "$i" =~ ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$ ]]
                                         then
