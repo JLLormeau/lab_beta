@@ -339,12 +339,13 @@ do
 				export MyToken=$MyToken
 				export Appname="easytravel"$X$i
 				export Hostname=$RESOURCE_GROUP"."$LOCATION".cloudapp.azure.com"
-				export Email="user"$i"@easytravel.com"
-				email=`echo $list_user | cut -d" " -f$(( $i + 1 ))`
-				if [ "$email"  != "" ]
-				then
-					export Email=$email
-				fi
+			        number_of_email=`echo $list_user | tr -cd '@' | wc -c`
+        			if [  $number_of_email -ge $(( $i + 1 )) ]
+        			then
+                			export Email=`echo $list_user | cut -d" " -f$(( $i + 1 ))`
+        			else
+                			export Email="user"$i"@easytravel.com"
+        			fi
 				./monaco deploy -e=environments.yaml template-monaco-for-easytravel/Deploy
 				./monaco deploy -e=environments.yaml template-monaco-for-easytravel/Slo
                         fi				
