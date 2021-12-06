@@ -223,8 +223,8 @@ then
 
 		case "$reponse" in
 			"0") verif="ko"
-			      until [ $verif = "ok" ]; do read  -p "0) Tenant : <YYY>.live.dynatrace.com   " MyTenant2
-			       if [[ $MyTenant2 =~ ^[a-z][a-z][a-z][a-z0-9][a-z0-9][a-z0-9][a-z0-9][a-z0-9]\.live\.dynatrace\.com+$ ]] ;then
+			      until [ $verif = "ok" ]; do read  -p "0) Tenant : <YYY>.live.dynatrace.com  or <domaine-name>/e/<tenant>  " MyTenant2
+			       if [[ $MyTenant2 =~ ^[a-zA-Z]++[0-9]++\.live\.dynatrace\.com$ ]] or [[ $MyTenant2 =~ ^[a-zA-Z0-9\.-_]++\/e\/[a-zA-Z0-9-]++$ ]]  ;then
 				verif="ok";sed -i s/MyTenant=$MyTenant/MyTenant=$MyTenant2/g env.file;. env.file
 				else verif="ko"; echo "bad saas tenant address" ; value="ko";read pressanycase;
 			     fi;done
@@ -325,7 +325,7 @@ do
                         then
 				export MyTenant=$MyTenant
 				export PaasToken=$PaasToken
-                                az vm run-command invoke -g "$RESOURCE_GROUP" -n "$DOMAIN" --command-id RunShellScript --scripts "cd /home && wget  -O Dynatrace-OneAgent-Linux-latest.sh \"https://"$MyTenant"/api/v1/deployment/installer/agent/unix/default/latest?arch=x86&flavor=default\" --header=\"Authorization: Api-Token "$PaasToken"\" && sudo /bin/sh Dynatrace-OneAgent-Linux-lates.sh --set-host-group=easytravel"$X$i" --set-host-property=env=sandbox";
+                                az vm run-command invoke -g "$RESOURCE_GROUP" -n "$DOMAIN" --command-id RunShellScript --scripts "cd /home && wget  -O Dynatrace-OneAgent-Linux-latest.sh \"https://"$MyTenant"/api/v1/deployment/installer/agent/unix/default/latest?arch=x86&flavor=default\" --header=\"Authorization: Api-Token "$PaasToken"\" && sudo /bin/sh Dynatrace-OneAgent-Linux-latest.sh --set-host-group=easytravel"$X$i" --set-host-property=env=sandbox";
                         fi				
 			if [[ $FULL_INSTALLATION = [Y] ]]
                         then
