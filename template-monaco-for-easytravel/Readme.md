@@ -35,4 +35,8 @@ You will import :
        cd;cd lab-environment-for-dynatrace-training
        ./monaco deploy -e=environments.yaml template-monaco-for-easytravel/Deploy
        ./monaco deploy -e=environments.yaml template-monaco-for-easytravel/Slo
-	  
+	 
+4) delete the configuration
+
+       cd;cd lab-environment-for-dynatrace-training
+       sed -i 's/Appname/'$Appname'/g' Delete/delete.yaml;./monaco deploy -e=environments.yaml Delete;sed -i 's/'$Appname'/Appname/g' Delete/delete.yaml
